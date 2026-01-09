@@ -2,60 +2,37 @@ name: Deploy PR Environment
 
 on:
   pull_request:
-    types: [opened, synchronize, reopened, closed]
+    types: [opened, synchronize, reopened]
 
 jobs:
   deploy:
-    if: github.event.action != 'closed'
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Setup kubectl
-        uses: azure/setup-kubectl@v4
+      - name: Deploy via SSH on Server A
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ vars.SSH_HOST }}
+          username: ${{ vars.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          script: |
+            set -e
 
-      - name: Configure kubeconfig
-        run: |
-          mkdir -p ~/.kube
-          echo "${{ secrets.KUBECONFIG }}" > ~/.kube/config
-          chmod 600 ~/.kube/config
+            PR_NUMBER=${{ github.event.pull_request.number }}
+            NAMESPACE=pr-${PR_NUMBER}
 
-      - name: Deploy PR environment
-        env:
-          PR_NUMBER: ${{ github.event.pull_request.number }}
-          IMAGE: nginx:alpine
-        run: |
-          NAMESPACE=pr-${PR_NUMBER}
-          HOST=pr-${PR_NUMBER}.cluster.stringtecnologiadf.org
+            echo "▶ Criando namespace ${NAMESPACE}"
+            kubectl get ns ${NAMESPACE} || kubectl create ns ${NAMESPACE}
 
-          kubectl create namespace $NAMESPACE --dry-run=client -o yaml | kubectl apply -f -
+            echo "▶ Aplicando deployment e service"
+            sed "s|IMAGE_PLACEHOLDER|nginx:alpine|g" k8s/base/deployment.yml | kubectl apply -n ${NAMESPACE} -f -
+            kubectl apply -n ${NAMESPACE} -f k8s/base/service.yml
 
-          sed "s|IMAGE_PLACEHOLDER|$IMAGE|g" k8s/base/deployment.yml \
-            | kubectl apply -n $NAMESPACE -f -
+            echo "▶ Aplicando ingress PR"
+            sed "s|PR_NUMBER|${PR_NUMBER}|g" k8s/overlays/pr/ingress.yml | kubectl apply -n ${NAMESPACE} -f -
 
-          kubectl apply -n $NAMESPACE -f k8s/base/service.yml
-
-          sed "s|HOST_PLACEHOLDER|$HOST|g" k8s/overlays/pr/ingress.yml \
-            | kubectl apply -n $NAMESPACE -f -
-
-  cleanup:
-    if: github.event.action == 'closed'
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Setup kubectl
-        uses: azure/setup-kubectl@v4
-
-      - name: Configure kubeconfig
-        run: |
-          mkdir -p ~/.kube
-          echo "${{ secrets.KUBECONFIG }}" > ~/.kube/config
-          chmod 600 ~/.kube/config
-
-      - name: Remove PR namespace
-        env:
-          PR_NUMBER: ${{ github.event.pull_request.number }}
-        run: |
-          kubectl delete namespace pr-${PR_NUMBER} --ignore-not-found
+            echo "✅ PR ${PR_NUMBER} publicado em:"
+            echo "https://pr-${PR_NUMBER}.cluster.stringtecnologiadf.org"
