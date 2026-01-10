@@ -1,0 +1,24 @@
+name: Runner Check
+
+on:
+  workflow_dispatch:
+
+jobs:
+  check:
+    runs-on: [self-hosted]
+
+    steps:
+      - name: Identidade do runner
+        run: |
+          whoami
+          hostname
+          uname -a
+
+      - name: Docker OK?
+        run: docker ps
+
+      - name: Kubernetes OK?
+        run: |
+          kubectl version --client
+          kubectl get nodes
+          kubectl get ns
