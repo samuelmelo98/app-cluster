@@ -1,0 +1,53 @@
+name: PR Preview Environment
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  deploy-pr:
+    runs-on: self-hosted
+
+    env:
+      KUBECONFIG: /home/samuel-admin/.kube/config
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Show context
+        run: |
+          whoami
+          hostname
+          kubectl get nodes
+
+      - name: Prepare namespace
+        run: |
+          PR_NUMBER=${{ github.event.pull_request.number }}
+          NAMESPACE=pr-${PR_NUMBER}
+
+          kubectl get ns ${NAMESPACE} || kubectl create ns ${NAMESPACE}
+
+      - name: Prepare manifests
+        run: |
+          PR_NUMBER=${{ github.event.pull_request.number }}
+
+          # imagem de teste (ajustável depois)
+          IMAGE=nginx:alpine
+          HOST=pr-${PR_NUMBER}.cluster.stringtecnologiadf.org
+
+          sed -i "s|IMAGE_PLACEHOLDER|${IMAGE}|g" k8s/base/deployment.yml
+          sed -i "s|HOST_PLACEHOLDER|${HOST}|g" k8s/overlays/pr/ingress.yml
+
+      - name: Deploy PR
+        run: |
+          PR_NUMBER=${{ github.event.pull_request.number }}
+          NAMESPACE=pr-${PR_NUMBER}
+
+          kubectl apply -k k8s/overlays/pr -n ${NAMESPACE}
+
+      - name: Output URL
+        run: |
+          PR_NUMBER=${{ github.event.pull_request.number }}
+          echo "✅ Preview disponível em:"
+          echo "https://pr-${PR_NUMBER}.cluster.stringtecnologiadf.org"
