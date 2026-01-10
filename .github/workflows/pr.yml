@@ -1,33 +1,38 @@
-script: |
-  set -e
+- name: Deploy via SSH on Server A
+  uses: appleboy/ssh-action@v1.0.3
+  with:
+    host: ${{ vars.SSH_HOST }}
+    username: ${{ vars.SSH_USER }}
+    key: ${{ secrets.SSH_KEY }}
+    script: |
+      set -e
 
-  echo "=== 🔐 TESTE SSH ==="
-  whoami
-  hostname
-  pwd
-  echo "SSH OK"
+      export KUBECONFIG=/home/ubuntu/kubeconfigs/ci-config
 
-  echo "=== 📦 TESTE KUBECTL ==="
-  which kubectl
-  kubectl version --client
-  kubectl get nodes
+      echo "=== 🔐 SSH OK ==="
+      whoami
+      hostname
 
-  PR_NUMBER=${{ github.event.pull_request.number }}
-  NAMESPACE=pr-${PR_NUMBER}
+      echo "=== 📦 KUBECTL ==="
+      kubectl version --client
+      kubectl get nodes
 
-  echo "=== 📂 CRIANDO / VALIDANDO NAMESPACE ==="
-  kubectl get ns ${NAMESPACE} || kubectl create ns ${NAMESPACE}
+      PR_NUMBER=${{ github.event.pull_request.number }}
+      NAMESPACE=pr-${PR_NUMBER}
 
-  echo "=== 🚀 DEPLOY DEPLOYMENT ==="
-  sed "s|IMAGE_PLACEHOLDER|nginx:alpine|g" k8s/base/deployment.yml \
-    | kubectl apply -n ${NAMESPACE} -f -
+      echo "=== 📂 Namespace ${NAMESPACE} ==="
+      kubectl get ns ${NAMESPACE} || kubectl create ns ${NAMESPACE}
 
-  echo "=== 🔌 DEPLOY SERVICE ==="
-  kubectl apply -n ${NAMESPACE} -f k8s/base/service.yml
+      echo "=== 🚀 Deployment ==="
+      sed "s|IMAGE_PLACEHOLDER|nginx:alpine|g" k8s/base/deployment.yml \
+        | kubectl apply -n ${NAMESPACE} -f -
 
-  echo "=== 🌐 DEPLOY INGRESS PR ==="
-  sed "s|PR_NUMBER|${PR_NUMBER}|g" k8s/overlays/pr/ingress.yml \
-    | kubectl apply -n ${NAMESPACE} -f -
+      echo "=== 🔌 Service ==="
+      kubectl apply -n ${NAMESPACE} -f k8s/base/service.yml
 
-  echo "✅ PR ${PR_NUMBER} publicado em:"
-  echo "https://pr-${PR_NUMBER}.cluster.stringtecnologiadf.org"
+      echo "=== 🌐 Ingress PR ==="
+      sed "s|PR_NUMBER|${PR_NUMBER}|g" k8s/overlays/pr/ingress.yml \
+        | kubectl apply -n ${NAMESPACE} -f -
+
+      echo "✅ PR publicado:"
+      echo "https://pr-${PR_NUMBER}.cluster.stringtecnologiadf.org"
