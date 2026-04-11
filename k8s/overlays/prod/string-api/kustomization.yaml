@@ -1,0 +1,18 @@
+resources:
+  - ../../../base
+
+namePrefix: string-api-
+
+images:
+  - name: IMAGE_PLACEHOLDER
+    newName: ghcr.io/samuelmelo98/string-api
+    newTag: latest
+
+patches:
+  - target:
+      kind: Ingress
+      name: app
+    patch: |-
+      - op: replace
+        path: /spec/rules/0/host
+        value: string-api.cluster.stringtecnologiadf.org

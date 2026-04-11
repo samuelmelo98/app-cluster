@@ -4,7 +4,7 @@ metadata:
   name: app
 spec:
   rules:
-    - host: site-html.cluster.stringtecnologiadf.org
+    - host: PLACEHOLDER
       http:
         paths:
           - path: /
