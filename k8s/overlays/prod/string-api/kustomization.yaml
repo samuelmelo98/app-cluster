@@ -8,13 +8,13 @@ images:
     newName: ghcr.io/samuelmelo98/string-api
     newTag: latest
 
-# 🔥 ESSENCIAL (corrige seu problema)
 labels:
   - pairs:
       app: string-api
     includeSelectors: true
 
 patches:
+  # 🔥 INGRESS
   - target:
       kind: Ingress
       name: app
@@ -22,3 +22,30 @@ patches:
       - op: replace
         path: /spec/rules/0/host
         value: string-api.cluster.stringtecnologiadf.org
+
+  # 🔥 DEPLOYMENT (containerPort)
+  - target:
+      kind: Deployment
+      name: app
+    patch: |-
+      - op: replace
+        path: /spec/template/spec/containers/0/ports/0/containerPort
+        value: 8080
+
+  # 🔥 SERVICE (targetPort)
+  - target:
+      kind: Service
+      name: app
+    patch: |-
+      - op: replace
+        path: /spec/ports/0/targetPort
+        value: 8080
+
+  # 🔥 SERVICE (selector - ESSENCIAL)
+  - target:
+      kind: Service
+      name: app
+    patch: |-
+      - op: replace
+        path: /spec/selector/app
+        value: string-api
