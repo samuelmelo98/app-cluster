@@ -1,17 +1,16 @@
 resources:
   - ../../../base
 
-namePrefix: string-api-
+namePrefix: site-html-
 
 images:
   - name: IMAGE_PLACEHOLDER
-    newName: ghcr.io/samuelmelo98/string-api
+    newName: ghcr.io/samuelmelo98/site-html
     newTag: latest
 
-# 🔥 ESSENCIAL (corrige seu problema)
 labels:
   - pairs:
-      app: string-api
+      app: site-html
     includeSelectors: true
 
 patches:
@@ -21,4 +20,4 @@ patches:
     patch: |-
       - op: replace
         path: /spec/rules/0/host
-        value: string-api.cluster.stringtecnologiadf.org
+        value: site-html.cluster.stringtecnologiadf.org
