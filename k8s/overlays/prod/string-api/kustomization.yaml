@@ -6,7 +6,7 @@ namePrefix: string-api-
 images:
 - name: IMAGE_PLACEHOLDER
   newName: ghcr.io/samuelmelo98/string-api
-  newTag: 4.0.0
+  newTag: 4.0.1
 
 labels:
 - includeSelectors: true
