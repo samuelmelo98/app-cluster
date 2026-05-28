@@ -1,76 +1,78 @@
 resources:
-  - ../../../base
+- ../../../base
 
 namePrefix: string-api-
 
 images:
-  - name: IMAGE_PLACEHOLDER
-    newName: ghcr.io/samuelmelo98/string-api
-    newTag: latest
+- name: IMAGE_PLACEHOLDER
+  newName: ghcr.io/samuelmelo98/string-api
+  newTag: latest
 
 labels:
-  - pairs:
-      app: string-api
-    includeSelectors: true
+- includeSelectors: true
+  pairs:
+    app: string-api
 
-patches:
   # 🔥 INGRESS
-  - target:
-      kind: Ingress
-      name: app
-    patch: |-
-      - op: replace
-        path: /spec/rules/0/host
-        value: string-api.cluster.stringtecnologiadf.org
 
   # 🔥 DEPLOYMENT (Ports & Environment Variables)
-  - target:
-      kind: Deployment
-      name: app
-    patch: |-
-      - op: replace
-        path: /spec/template/spec/containers/0/ports/0/containerPort
-        value: 8080
-      - op: add
-        path: /spec/template/spec/containers/0/env
-        value:
-          - name: SPRING_PROFILES_ACTIVE
-            value: prod
-          - name: URL
-            valueFrom:
-              secretKeyRef:
-                name: string-api-secret
-                key: infosimples-url
-          - name: KEY
-            valueFrom:
-              secretKeyRef:
-                name: string-api-secret
-                key: infosimples-key
-          - name: USUARIO
-            valueFrom:
-              secretKeyRef:
-                name: string-api-secret
-                key: db-user
-          - name: SENHA
-            valueFrom:
-              secretKeyRef:
-                name: string-api-secret
-                key: db-pass
 
   # 🔥 SERVICE (targetPort)
-  - target:
-      kind: Service
-      name: app
-    patch: |-
-      - op: replace
-        path: /spec/ports/0/targetPort
-        value: 8080
 
   # 🔥 SERVICE (selector - ESSENCIAL)
-  - target:
-      kind: Service
-      name: app
-    patch: |-
-      - op: replace
-        path: /spec/selector/app
-        value: string-api
+patches:
+- patch: |-
+    - op: replace
+      path: /spec/rules/0/host
+      value: string-api.cluster.stringtecnologiadf.org
+  target:
+    kind: Ingress
+    name: app
+- patch: |-
+    - op: replace
+      path: /spec/template/spec/containers/0/ports/0/containerPort
+      value: 8080
+    - op: add
+      path: /spec/template/spec/containers/0/env
+      value:
+        - name: SPRING_PROFILES_ACTIVE
+          value: prod
+        - name: URL
+          valueFrom:
+            secretKeyRef:
+              name: string-api-secret
+              key: infosimples-url
+        - name: KEY
+          valueFrom:
+            secretKeyRef:
+              name: string-api-secret
+              key: infosimples-key
+        - name: USUARIO
+          valueFrom:
+            secretKeyRef:
+              name: string-api-secret
+              key: db-user
+        - name: SENHA
+          valueFrom:
+            secretKeyRef:
+              name: string-api-secret
+              key: db-pass
+  target:
+    kind: Deployment
+    name: app
+- patch: |-
+    - op: replace
+      path: /spec/ports/0/targetPort
+      value: 8080
+  target:
+    kind: Service
+    name: app
+- patch: |-
+    - op: replace
+      path: /spec/selector/app
+      value: string-api
+  target:
+    kind: Service
+    name: app
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
