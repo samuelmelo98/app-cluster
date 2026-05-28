@@ -1,25 +1,35 @@
 resources:
-- ../../../base
+  - ../../../base
 
 namePrefix: site-html-
 
 images:
-- name: IMAGE_PLACEHOLDER
-  newName: ghcr.io/samuelmelo98/site-html
-  newTag: 4.0.2
+  - name: IMAGE_PLACEHOLDER
+    newName: ghcr.io/samuelmelo98/site-html
+    newTag: 4.0.2
+
+replicas:
+  - name: site-html-app
+    count: 2
 
 labels:
-- includeSelectors: true
-  pairs:
-    app: site-html
+  - pairs:
+      app: site-html
+    includeSelectors: true
 
 patches:
-- patch: |-
-    - op: replace
-      path: /spec/rules/0/host
-      value: site-html.cluster.stringtecnologiadf.org
-  target:
-    kind: Ingress
-    name: app
-apiVersion: kustomize.config.k8s.io/v1beta1
-kind: Kustomization
+  - target:
+      kind: Ingress
+      name: app
+    patch: |-
+      - op: replace
+        path: /spec/rules/0/host
+        value: site-html.cluster.stringtecnologiadf.org
+
+  - target:
+      kind: Service
+      name: app
+    patch: |-
+      - op: replace
+        path: /spec/selector/app
+        value: site-html
