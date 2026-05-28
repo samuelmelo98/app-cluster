@@ -70,11 +70,17 @@ patches:
                 name: string-api-secret
                 key: db-pass
                   
-          - name  NAME_SERVER
-            valueFrom
-              secretKeyRef
-                name  string-api-secret
-                key  name-server
+          - name: NAME_SERVER
+            valueFrom:
+              secretKeyRef:
+                name: string-api-secret
+                key: name-server
+
+          - name: PORT
+            valueFrom:
+              secretLeyRef:
+                name: string-api-secret
+                key: name-port
 
   # 🔥 SERVICE (targetPort)
   - target:
