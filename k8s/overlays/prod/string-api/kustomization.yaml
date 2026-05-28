@@ -69,7 +69,7 @@ patches:
               secretKeyRef:
                 name: string-api-secret
                 key: db-pass
-                  
+
           - name: NAME_SERVER
             valueFrom:
               secretKeyRef:
@@ -78,7 +78,7 @@ patches:
 
           - name: PORT
             valueFrom:
-              secretLeyRef:
+              secretKeyRef:
                 name: string-api-secret
                 key: name-port
 
