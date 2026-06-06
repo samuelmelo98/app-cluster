@@ -3,6 +3,7 @@ kind: Kustomization
 
 resources:
   - ../../../base
+  - documentos-pvc.yaml
 
 namePrefix: string-api-
 
@@ -31,7 +32,7 @@ patches:
         path: /spec/rules/0/host
         value: string-api.cluster.stringtecnologiadf.org
 
-  # 🔥 DEPLOYMENT (Ports & Environment Variables)
+  # 🔥 DEPLOYMENT (Portas + Variáveis)
   - target:
       kind: Deployment
       name: app
@@ -81,18 +82,24 @@ patches:
               secretKeyRef:
                 name: string-api-secret
                 key: name-port
-    - op: add
-      path: /spec/template/spec/volumes
-      value:
-        - name: documentos
-          persistentVolumeClaim:
-            claimName: documentos-pvc
 
-    - op: add
-      path: /spec/template/spec/containers/0/volumeMounts
-      value:
-        - name: documentos
-          mountPath: /data/documentos
+  # 🔥 DEPLOYMENT (PVC DOCUMENTOS)
+  - target:
+      kind: Deployment
+      name: app
+    patch: |-
+      - op: add
+        path: /spec/template/spec/volumes
+        value:
+          - name: documentos
+            persistentVolumeClaim:
+              claimName: string-api-documentos-pvc
+
+      - op: add
+        path: /spec/template/spec/containers/0/volumeMounts
+        value:
+          - name: documentos
+            mountPath: /data/documentos
 
   # 🔥 SERVICE (targetPort)
   - target:
@@ -103,7 +110,7 @@ patches:
         path: /spec/ports/0/targetPort
         value: 8080
 
-  # 🔥 SERVICE (selector - ESSENCIAL)
+  # 🔥 SERVICE (selector)
   - target:
       kind: Service
       name: app
