@@ -81,6 +81,18 @@ patches:
               secretKeyRef:
                 name: string-api-secret
                 key: name-port
+    - op: add
+      path: /spec/template/spec/volumes
+      value:
+        - name: documentos
+          persistentVolumeClaim:
+            claimName: documentos-pvc
+
+    - op: add
+      path: /spec/template/spec/containers/0/volumeMounts
+      value:
+        - name: documentos
+          mountPath: /data/documentos
 
   # 🔥 SERVICE (targetPort)
   - target:
