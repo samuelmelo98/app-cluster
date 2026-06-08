@@ -10,7 +10,7 @@ namePrefix: string-api-
 images:
 - name: IMAGE_PLACEHOLDER
   newName: ghcr.io/samuelmelo98/string-api
-  newTag: 6.0.2
+  newTag: 6.0.3
 
 replicas:
 - count: 1
@@ -39,6 +39,14 @@ labels:
   # 🔥 SERVICE (targetPort)
 
   # 🔥 SERVICE (selector)
+
+
+
+
+
+
+
+
 
 
 
