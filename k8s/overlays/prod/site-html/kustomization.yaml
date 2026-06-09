@@ -6,7 +6,7 @@ namePrefix: site-html-
 images:
 - name: IMAGE_PLACEHOLDER
   newName: ghcr.io/samuelmelo98/site-html
-  newTag: 4.0.7
+  newTag: 4.0.8
 
 replicas:
 - count: 2
