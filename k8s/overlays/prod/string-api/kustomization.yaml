@@ -40,53 +40,6 @@ labels:
 
   # 🔥 SERVICE (selector)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 patches:
 - patch: |-
     - op: replace
@@ -129,6 +82,11 @@ patches:
             secretKeyRef:
               name: string-api-secret
               key: db-pass
+       - name: REDIS_PASSWORD
+         valueFrom:
+           secretKeyRef:
+             name: string-api-secret
+             key: redis-password
 
         - name: NAME_SERVER
           valueFrom:
