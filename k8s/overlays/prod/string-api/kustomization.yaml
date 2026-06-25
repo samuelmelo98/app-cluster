@@ -82,11 +82,11 @@ patches:
             secretKeyRef:
               name: string-api-secret
               key: db-pass
-       - name: REDIS_PASSWORD
-         valueFrom:
-           secretKeyRef:
-             name: string-api-secret
-             key: redis-password
+        - name: REDIS_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: string-api-secret
+              key: redis-password
 
         - name: NAME_SERVER
           valueFrom:
