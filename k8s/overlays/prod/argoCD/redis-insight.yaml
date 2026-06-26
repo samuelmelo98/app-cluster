@@ -1,0 +1,26 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+
+metadata:
+  name: redis-insight
+  namespace: argocd
+
+spec:
+  project: default
+
+  source:
+    repoURL: https://github.com/samuelmelo98/app-cluster.git
+    targetRevision: main
+    path: k8s/overlays/prod/infrastructure/redis-insight
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: prod
+
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+
+    syncOptions:
+      - CreateNamespace=true

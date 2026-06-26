@@ -2,3 +2,4 @@ resources:
   - string-api.yaml
   - site-html.yaml
   - redis.yaml
+  - redis-insight.yaml
