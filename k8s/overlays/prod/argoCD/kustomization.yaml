@@ -3,3 +3,5 @@ resources:
   - site-html.yaml
   - redis.yaml
   - redis-insight.yaml
+  - minio.yaml
+
