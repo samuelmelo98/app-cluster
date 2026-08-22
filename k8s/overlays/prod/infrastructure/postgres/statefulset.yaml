@@ -56,15 +56,17 @@ spec:
       partition: 0
 
   volumeClaimTemplates:
-    - metadata:
-        name: postgres-storage
+  - apiVersion: v1
+    kind: PersistentVolumeClaim
+    metadata:
+      name: postgres-storage
 
-      spec:
-        accessModes:
-          - ReadWriteOnce
+    spec:
+      accessModes:
+        - ReadWriteOnce
 
-        resources:
-          requests:
-            storage: 5Gi
+      resources:
+        requests:
+          storage: 5Gi
 
-        volumeMode: Filesystem
+      volumeMode: Filesystem
