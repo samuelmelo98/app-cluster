@@ -5,13 +5,24 @@ metadata:
   namespace: argocd
 spec:
   project: default
+
   source:
     repoURL: https://github.com/samuelmelo98/app-cluster.git
     targetRevision: main
     path: k8s/overlays/prod/infrastructure/postgres
+
   destination:
     server: https://kubernetes.default.svc
     namespace: bancos
+
+  ignoreDifferences:
+    - group: apps
+      kind: StatefulSet
+      name: postgres
+      namespace: bancos
+      jsonPointers:
+        - /spec/volumeClaimTemplates/0/status
+
   syncPolicy:
     automated:
       prune: false
