@@ -4,4 +4,6 @@ resources:
   - redis.yaml
   - redis-insight.yaml
   - minio.yaml
+  - argocd-rbac-cm.yaml
+  - postgres.yaml
 

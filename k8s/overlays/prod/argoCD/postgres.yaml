@@ -1,0 +1,18 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: postgres-bancos
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/samuelmelo98/app-cluster.git
+    targetRevision: main
+    path: k8s/overlays/prod/infrastructure/postgres # Ou o caminho exato onde estão os manifests do postgres-0
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: bancos
+  syncPolicy:
+    automated:
+      prune: false
+      selfHeal: true
