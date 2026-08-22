@@ -8,7 +8,7 @@ spec:
   source:
     repoURL: https://github.com/samuelmelo98/app-cluster.git
     targetRevision: main
-    path: k8s/overlays/prod/infrastructure/postgres # Ou o caminho exato onde estão os manifests do postgres-0
+    path: k8s/overlays/prod/infrastructure/postgres
   destination:
     server: https://kubernetes.default.svc
     namespace: bancos
@@ -16,3 +16,5 @@ spec:
     automated:
       prune: false
       selfHeal: true
+    syncOptions:
+      - ServerSideApply=true
