@@ -15,10 +15,8 @@ spec:
   syncPolicy:
     automated:
       prune: false
-      selfHeal: false
-  ignoreDifferences:
-    - group: apps
-      kind: StatefulSet
-      name: postgres
-      jsonPointers:
-        - /spec
+      selfHeal: true
+    syncOptions:
+      - ServerSideApply=true
+      - Force=true
+      - Replace=false
