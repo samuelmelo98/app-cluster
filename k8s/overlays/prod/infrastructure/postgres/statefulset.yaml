@@ -1,5 +1,6 @@
 apiVersion: apps/v1
 kind: StatefulSet
+
 metadata:
   name: postgres
   namespace: bancos
@@ -7,6 +8,13 @@ metadata:
 spec:
   serviceName: postgres
   replicas: 1
+
+  podManagementPolicy: OrderedReady
+  revisionHistoryLimit: 10
+
+  persistentVolumeClaimRetentionPolicy:
+    whenDeleted: Retain
+    whenScaled: Retain
 
   selector:
     matchLabels:
@@ -16,6 +24,7 @@ spec:
     metadata:
       labels:
         app: postgres
+
     spec:
       containers:
         - name: postgres
@@ -41,12 +50,21 @@ spec:
             - name: postgres-storage
               mountPath: /var/lib/postgresql/data
 
+  updateStrategy:
+    type: RollingUpdate
+    rollingUpdate:
+      partition: 0
+
   volumeClaimTemplates:
     - metadata:
         name: postgres-storage
+
       spec:
         accessModes:
           - ReadWriteOnce
+
         resources:
           requests:
             storage: 5Gi
+
+        volumeMode: Filesystem
