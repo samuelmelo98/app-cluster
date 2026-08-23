@@ -6,4 +6,6 @@ resources:
   - minio.yaml
   - argocd-rbac-cm.yaml
   - postgres.yaml
+  - kafka.yaml
+  - kafka-ui.yaml
 

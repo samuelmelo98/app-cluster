@@ -1,0 +1,70 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kafka-ui
+  namespace: prod
+  labels:
+    app: kafka-ui
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kafka-ui
+  template:
+    metadata:
+      labels:
+        app: kafka-ui
+    spec:
+      containers:
+        - name: kafka-ui
+          image: provectuslabs/kafka-ui:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
+              name: http
+          env:
+            - name: SPRING_CONFIG_ADDITIONAL_LOCATION
+              value: "optional:file:/etc/kafkaui/config.yml"
+
+            # Faz o Spring/Kafka UI respeitar X-Forwarded-Proto,
+            # X-Forwarded-Host etc. enviados pelo Traefik.
+            - name: SERVER_FORWARD_HEADERS_STRATEGY
+              value: "framework"
+
+            - name: KEYCLOAK_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: kafka-ui-oauth
+                  key: CLIENT_SECRET
+
+          volumeMounts:
+            - name: kafka-ui-config-vol
+              mountPath: /etc/kafkaui/config.yml
+              subPath: config.yml
+
+          resources:
+            requests:
+              cpu: 200m
+              memory: 256Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
+
+          livenessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8080
+            initialDelaySeconds: 40
+            periodSeconds: 15
+
+          readinessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8080
+            initialDelaySeconds: 30
+            periodSeconds: 10
+
+      volumes:
+        - name: kafka-ui-config-vol
+          configMap:
+            name: kafka-ui-config
