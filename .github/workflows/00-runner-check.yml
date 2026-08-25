@@ -14,8 +14,8 @@ jobs:
           hostname
           uname -a
 
-      - name: Docker OK?
-        run: docker ps
+      - name: K3s workloads
+        run: kubectl get pods -A
 
       - name: Kubernetes OK?
         run: |
