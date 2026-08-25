@@ -16,3 +16,4 @@ resources:
   - strimzi.yaml
   - exemplo-kafka.yaml
   - keycloak-operator.yaml
+  - keycloak-db.yaml
