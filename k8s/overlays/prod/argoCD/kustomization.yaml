@@ -17,3 +17,4 @@ resources:
   - exemplo-kafka.yaml
   - keycloak-operator.yaml
   - keycloak-db.yaml
+  - keycloak.yaml
