@@ -6,7 +6,7 @@ resources:
   - argocd-rbac-cm.yaml
   - ingress.yaml
   - string-api.yaml
-  - site-html.yaml
+  - string-app.yaml
   - redis.yaml
   - redis-insight.yaml
   - minio.yaml
