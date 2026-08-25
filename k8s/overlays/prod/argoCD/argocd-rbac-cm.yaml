@@ -4,5 +4,7 @@ metadata:
   name: argocd-rbac-cm
   namespace: argocd
 data:
-  policy.default: role:readonly
-  users.anonymous.enabled: "true"
+  policy.default: role:portfolio
+  policy.csv: |
+    p, role:portfolio, applications, get, */*, allow
+    p, role:portfolio, projects, get, *, allow
