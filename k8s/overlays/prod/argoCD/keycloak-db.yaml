@@ -12,6 +12,13 @@ spec:
   destination:
     server: https://kubernetes.default.svc
     namespace: keycloak
+  ignoreDifferences:
+    - group: apps
+      kind: StatefulSet
+      name: keycloak-postgres
+      namespace: keycloak
+      jsonPointers:
+        - /spec/volumeClaimTemplates/0/status
   syncPolicy:
     automated:
       prune: false
