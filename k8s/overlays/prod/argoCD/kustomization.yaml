@@ -13,3 +13,4 @@ resources:
   - kafka.yaml
   - kafka-ui.yaml
   - strimzi.yaml
+  - exemplo-kafka.yaml
