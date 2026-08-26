@@ -18,3 +18,4 @@ resources:
   - keycloak-operator.yaml
   - keycloak-db.yaml
   - keycloak.yaml
+  - open-ia.yaml

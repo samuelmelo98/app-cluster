@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: open-ia
+  namespace: prod
+  labels:
+    app: open-ia
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: open-ia
+  template:
+    metadata:
+      labels:
+        app: open-ia
+    spec:
+      containers:
+        - name: open-webui
+          image: ghcr.io/open-webui/open-webui:main
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
+              name: http
+          env:
+            - name: OLLAMA_BASE_URL
+              value: "http://100.71.136.42:11434"
+          volumeMounts:
+            - name: open-webui-data
+              mountPath: /app/backend/data
+          resources:
+            requests:
+              cpu: 200m
+              memory: 512Mi
+            limits:
+              cpu: "2"
+              memory: 2Gi
+      volumes:
+        - name: open-webui-data
+          persistentVolumeClaim:
+            claimName: open-ia-data
