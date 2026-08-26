@@ -19,3 +19,4 @@ resources:
   - keycloak-db.yaml
   - keycloak.yaml
   - open-ia.yaml
+  - ollama-remote-test.yaml

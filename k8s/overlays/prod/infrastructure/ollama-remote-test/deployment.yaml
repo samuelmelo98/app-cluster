@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ollama-remote-test
+  namespace: prod
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ollama-remote-test
+  template:
+    metadata:
+      labels:
+        app: ollama-remote-test
+    spec:
+      containers:
+        - name: curl
+          image: curlimages/curl:latest
+          command: ["sh", "-c"]
+          args: ["while true; do sleep 3600; done"]
+          env:
+            - name: OLLAMA_BASE_URL
+              value: "http://100.71.136.42:11434"
