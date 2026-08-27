@@ -25,6 +25,8 @@ spec:
           env:
             - name: OLLAMA_BASE_URL
               value: "http://100.95.78.1:11434"
+            - name: DEFAULT_MODELS
+              value: "rag-qwen3.5-4b"
           volumeMounts:
             - name: open-webui-data
               mountPath: /app/backend/data
