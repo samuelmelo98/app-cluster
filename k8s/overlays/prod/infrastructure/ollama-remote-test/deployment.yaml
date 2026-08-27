@@ -21,3 +21,13 @@ spec:
           env:
             - name: OLLAMA_BASE_URL
               value: "http://100.71.136.42:11434"
+          readinessProbe:
+            exec:
+              command:
+                - sh
+                - -c
+                - curl -fsS "$OLLAMA_BASE_URL/api/ps" | grep -q "qwen2.5-coder:7b"
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 2
