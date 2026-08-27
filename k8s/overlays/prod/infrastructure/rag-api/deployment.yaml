@@ -17,7 +17,7 @@ spec:
         - name: ghcr-pull-secret
       containers:
         - name: rag-api
-          image: ghcr.io/samuelmelo98/rag-api:1.0.1
+          image: ghcr.io/samuelmelo98/rag-api:1.0.2
           imagePullPolicy: IfNotPresent
           ports:
             - name: http
@@ -37,7 +37,11 @@ spec:
                   name: ia-postgres-secret
                   key: POSTGRES_PASSWORD
             - name: OLLAMA_BASE_URL
-              value: http://100.95.78.1:11434
+              value: http://100.71.136.42:11434
+            - name: LLM_MODEL
+              value: qwen2.5-coder:7b
+            - name: EMBED_MODEL
+              value: nomic-embed-text
           readinessProbe:
             httpGet:
               path: /health
