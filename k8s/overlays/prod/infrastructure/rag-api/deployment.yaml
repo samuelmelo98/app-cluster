@@ -37,7 +37,7 @@ spec:
                   name: ia-postgres-secret
                   key: POSTGRES_PASSWORD
             - name: OLLAMA_BASE_URL
-              value: http://100.71.136.42:11434
+              value: http://100.95.78.1:11434
           readinessProbe:
             httpGet:
               path: /health
