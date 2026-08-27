@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rag-api
+  namespace: prod
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: rag-api
+  template:
+    metadata:
+      labels:
+        app: rag-api
+    spec:
+      containers:
+        - name: rag-api
+          image: ghcr.io/samuelmelo98/rag-api:1.0.0
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 8000
+          env:
+            - name: PGHOST
+              value: ia-postgres
+            - name: PGPORT
+              value: "5432"
+            - name: PGDATABASE
+              value: ia_rag
+            - name: PGUSER
+              value: ia
+            - name: PGPASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: ia-postgres-secret
+                  key: POSTGRES_PASSWORD
+            - name: OLLAMA_BASE_URL
+              value: http://100.71.136.42:11434
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: http
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: http
+            initialDelaySeconds: 15
+            periodSeconds: 20
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: "1"
+              memory: 512Mi

@@ -21,3 +21,4 @@ resources:
   - open-ia.yaml
   - ollama-remote-test.yaml
   - ia-postgres.yaml
+  - rag-api.yaml
