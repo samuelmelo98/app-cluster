@@ -27,6 +27,8 @@ spec:
               value: "http://100.71.136.42:11434"
             - name: DEFAULT_MODELS
               value: "rag-qwen2.5-coder-7b"
+            - name: BYPASS_MODEL_ACCESS_CONTROL
+              value: "true"
           volumeMounts:
             - name: open-webui-data
               mountPath: /app/backend/data
