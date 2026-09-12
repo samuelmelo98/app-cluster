@@ -1,0 +1,96 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: string-email
+  namespace: prod
+
+spec:
+  replicas: 1
+
+  strategy:
+    type: Recreate
+
+  selector:
+    matchLabels:
+      app: string-email
+
+  template:
+    metadata:
+      labels:
+        app: string-email
+
+    spec:
+      serviceAccountName: string-email
+      automountServiceAccountToken: false
+      terminationGracePeriodSeconds: 30
+
+      hostAliases:
+        - ip: "10.10.10.1"
+          hostnames:
+            - "auth.stringtecnologiadf.org"
+            - "mail.stringtecnologiadf.org"
+
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 185
+        runAsGroup: 185
+        fsGroup: 185
+        seccompProfile:
+          type: RuntimeDefault
+
+      containers:
+        - name: string-email
+          image: IMAGE_PLACEHOLDER
+          imagePullPolicy: Always
+
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+
+          envFrom:
+            - configMapRef:
+                name: string-email-config
+
+            - secretRef:
+                name: string-email-secret
+
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop:
+                - ALL
+
+          resources:
+            requests:
+              cpu: 100m
+              memory: 256Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
+
+          startupProbe:
+            tcpSocket:
+              port: http
+            periodSeconds: 3
+            failureThreshold: 30
+
+          readinessProbe:
+            tcpSocket:
+              port: http
+            periodSeconds: 10
+
+          livenessProbe:
+            tcpSocket:
+              port: http
+            periodSeconds: 20
+
+          volumeMounts:
+            - name: tmp
+              mountPath: /tmp
+
+      volumes:
+        - name: tmp
+          emptyDir:
+            sizeLimit: 256Mi

@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: string-email-config
+  namespace: prod
+data:
+  KEYCLOAK_REALM_URL: "https://auth.stringtecnologiadf.org/realms/stringtecnologia"
+
+  QUARKUS_HTTP_HOST: "0.0.0.0"
+
+  SMTP_HOST: "mail.stringtecnologiadf.org"
+  SMTP_PORT: "587"
+  SMTP_LOGIN: "REQUIRED"
+  SMTP_START_TLS: "REQUIRED"
+  SMTP_TLS: "false"
+  SMTP_MOCK: "false"
+
+  QUARKUS_HTTP_BODY_UPLOADS_DIRECTORY: "/tmp/email-uploads"

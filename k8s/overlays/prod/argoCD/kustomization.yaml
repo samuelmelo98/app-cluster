@@ -23,3 +23,4 @@ resources:
   - ollama-remote-test.yaml
   - ia-postgres.yaml
   - rag-api.yaml
+  - string-emails.yaml
