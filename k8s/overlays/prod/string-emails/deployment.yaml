@@ -21,6 +21,8 @@ spec:
 
     spec:
       serviceAccountName: string-email
+      imagePullSecrets:
+        - name: ghcr-pull-secret
       automountServiceAccountToken: false
       terminationGracePeriodSeconds: 30
 
