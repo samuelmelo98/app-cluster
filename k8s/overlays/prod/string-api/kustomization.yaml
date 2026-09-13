@@ -6,3 +6,7 @@ namespace: prod
 resources:
 - app
 - sealed-secret.yaml
+images:
+- name: IMAGE_PLACEHOLDER
+  newName: ghcr.io/samuelmelo98/string-api
+  newTag: 6.0.9
