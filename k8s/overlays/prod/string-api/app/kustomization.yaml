@@ -102,6 +102,15 @@ patches:
               secretKeyRef:
                 name: string-api-secret
                 key: string-email-client-secret
+
+                     # =================================================
+          # TESTE STRING EMAILS
+          # =================================================
+          - name: APP_EMAIL_TEST_ENABLED
+            value: "true"
+
+          - name: APP_EMAIL_TEST_TO
+            value: "samuelmelo98@hotmail.com"
     target:
       kind: Deployment
       name: app
