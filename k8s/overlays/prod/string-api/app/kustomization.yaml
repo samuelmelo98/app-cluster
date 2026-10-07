@@ -85,6 +85,16 @@ patches:
                 name: string-api-secret
                 key: name-port
 
+
+          # =================================================
+          # WHATSAPP
+          # =================================================
+          - name: WHATSAPP_WEBHOOK_VERIFY_TOKEN
+            valueFrom:
+              secretKeyRef:
+                name: string-api-secret
+                key: whatsapp-webhook-verify-token
+
           # =================================================
           # STRING EMAILS
           # =================================================
@@ -103,7 +113,8 @@ patches:
                 name: string-api-secret
                 key: string-email-client-secret
 
-                     # =================================================
+
+          # =================================================
           # TESTE STRING EMAILS
           # =================================================
           - name: APP_EMAIL_TEST_ENABLED
