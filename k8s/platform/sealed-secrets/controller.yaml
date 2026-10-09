@@ -176,12 +176,14 @@ spec:
       labels:
         name: sealed-secrets-controller
     spec:
+      imagePullSecrets:
+        - name: ghcr-pull-secret
       containers:
       - args: []
         command:
         - controller
         env: []
-        image: docker.io/bitnami/sealed-secrets-controller:0.39.1
+        image: ghcr.io/samuelmelo98/mirror/docker.io/bitnami/sealed-secrets-controller:0.39.1
         imagePullPolicy: IfNotPresent
         livenessProbe:
           httpGet:
@@ -208,7 +210,6 @@ spec:
         volumeMounts:
         - mountPath: /tmp
           name: tmp
-      imagePullSecrets: []
       initContainers: []
       securityContext:
         fsGroup: 65534

@@ -1,0 +1,14 @@
+---
+apiVersion: bitnami.com/v1alpha1
+kind: SealedSecret
+metadata:
+  name: ghcr-pull-secret
+  namespace: keycloak
+spec:
+  encryptedData:
+    .dockerconfigjson: AgAm+IoMRKLegdNtHJQhNjXP+bzXJj6TtPPVY6UB2m0X67jv9kbH2piD/1R7T1Jroxwv2c6YE4rYUYkOOdJwe9P+0E9gwg12tJjfzMS1DpBgZosliQqjdBcieaYym9qbxFkj1t+gu/DhY9+cdlN3GiiLGUN890Sxj3Qyi7XP+igPhokYQwcZLnrnxrzLJ8kd5rywK6aJPV36xv4D6E/XB42OzBkz0osXo9RI0aVYSvuQQqOkrfvSpV7GdEVFveAL04u+jhr9ryyPg1/hBScH5CfUPMomYeyHU9M9xUCku9vJB04y3pn1m9yBiA6VtxRlRoj7K9s0PJzySJb9Bv6YUqIoGugFK837z1tEMmVRIAQK3hU6pbXohaFrL8pU7AOA/QFXFJmQLbuOCsunvzGLu/ldA5B/9OHTkQ3MDOmpT5VlSkexCLloHmOkuE/ZmLhaTjtmoSSG2l0+tTepZBOdwp7pkBlc21f+Dhlzqc3ArMxPZoNIxheP3Mpjo+FhwLo9ucgB2edaGw2bpbvDueCsV89QJSA6Ln8nE8dr3P4ryD+G/5lATdGwYMEUaEf1krAK0tF1r+ADNXoq4DBZO7O/P6XfpOQ5dyCay0edCc5zczdX0rDMp8OQCejzKjK5K4uFelg20tGaQim1fDOciKRk9WNDS5e8zNJjWMy1PjAiqljjPPCMqDGLMVIePEEPUrdYZZgsbt+al34RIDuSG1NaOn76iLMPrGygPWgEKVRCAc2zE6YZumUNePFd1JajkjJ2CdUY7azUAD7K/6MgivpUGq0XPGM6yRE0easL7aTKPnb+ocVzRy32E5nesMiPF52ECebzszWhjh6XRLXwho5NNGHdQlpo6IYFKd1CNTtF2GaC+daIHahzFC2CbjH4ZvdyJO+gPGjTaL39LsQZk8EkpBU8LyWSZwo3GA0v7WI5jwPta+3gJlwLvkMEzA==
+  template:
+    metadata:
+      name: ghcr-pull-secret
+      namespace: keycloak
+    type: kubernetes.io/dockerconfigjson
