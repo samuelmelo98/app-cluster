@@ -12,6 +12,13 @@ images:
     newName: ghcr.io/samuelmelo98/mirror/quay.io/argoproj/argocd
     newTag: v3.5.1
 
+  - name: ghcr.io/dexidp/dex
+    newName: ghcr.io/samuelmelo98/mirror/ghcr.io/dexidp/dex
+    newTag: v2.45.0
+  - name: public.ecr.aws/docker/library/redis
+    newName: ghcr.io/samuelmelo98/mirror/public.ecr.aws/docker/library/redis
+    newTag: 8.2.3-alpine
+
 patches:
   - path: image-pull-secret-patch.yaml
     target:
