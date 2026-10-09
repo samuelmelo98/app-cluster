@@ -1,0 +1,14 @@
+---
+apiVersion: bitnami.com/v1alpha1
+kind: SealedSecret
+metadata:
+  name: ghcr-pull-secret
+  namespace: argocd
+spec:
+  encryptedData:
+    .dockerconfigjson: AgAysKKNdQ8uCgYMg1XnyGpZVtwALHjfA/svnSRyKCLRQ9FfxEfWf0LMdoHmOo6BPOtEN/3bJL1fEDDlgUxv9LBRhNd5F9Y0rPV7NvRiFjF8i1OQbSeYPxP9ujOFnYZRte4fSgu5/TT3dO6diAPZPp1wWkcty0aShSCM39BETYH5mudBgEGcEmBU0fKZtyqPoio6VQ76oAXzXla3iM4VisIrZdwSMuIV9TqYWOBa0O/AtqysyroBAW2bbdNBphxvniXce4neFt6sJygxTfzPc36QVuN7I1FQbaN/osVdZEygDV4QgKU+lKe4eChTX5c37xIM42o/UX3zzBH3qabXWkCmN03jfLiLuExlJ9Z3pGmcdfrhLhzwaOLYsY+IjWojU4je8iexdVONSWINi+9B5PMuvMn0KDt7agPLxpy4ZwU3ezUqmUgjEAJD5cx3mnW2WQkjGLyqzJQ6bnNz/ISczTT/OmQShQfkdLRV8XP3rR+3Gl9QeAknSQUrCIt41e3W92ySvJRBXbn21Qx1UFi5p4f+Bk7j8rD/duQK4CE1t86O6RQ1wVHnNtJXUbg29aY6xV7ABPQKVf5X1mchvyvN1GIkQGiNzJPthgBZUwsZN5NixIcFE2RdWY4ehrJ7I02iUDSoS4FtrOikMUZ/x0G3JMiAjnIfrD4Mm3Xf0XrvvjJfImNHUJjW4l/Z6F58GU7ahRUCmxS7IaE3YY68dXpR9IylH8HT7xJjLjfT4LssdcZ7FNZrl8QUIdDqpV4WU8bBSROlxNkFdwsOxWmDH6c06N7XRH7NBtVKfSgDHLVNUg9Prf2nI1/XSuhYLSGONWB7eN202JLM6J7TNe+c2KIyVEF8OeXmKhaJisXPwr5gZVH2FQpTC7IJL/VkTcUkfm3+1zABbp6aip4TwCcRebICTIq2zaQpJ2E9z07pHqayOhoQyRI1qFyPk3BMzA==
+  template:
+    metadata:
+      name: ghcr-pull-secret
+      namespace: argocd
+    type: kubernetes.io/dockerconfigjson

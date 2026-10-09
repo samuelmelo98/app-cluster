@@ -1,0 +1,24 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: argocd
+
+resources:
+  - installation.yaml
+  - ghcr-pull-sealed.yaml
+
+images:
+  - name: quay.io/argoproj/argocd
+    newName: ghcr.io/samuelmelo98/mirror/quay.io/argoproj/argocd
+    newTag: v3.5.1
+
+patches:
+  - path: image-pull-secret-patch.yaml
+    target:
+      group: apps
+      version: v1
+      kind: Deployment|StatefulSet
+
+  - path: argocd-cm-patch.yaml
+  - path: argocd-cmd-params-patch.yaml
+  - path: argocd-rbac-patch.yaml

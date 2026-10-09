@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: argocd-rbac-cm
+data:
+  policy.default: role:portfolio
+  policy.csv: |
+    p, role:portfolio, applications, get, */*, allow
+    p, role:portfolio, projects, get, *, allow
