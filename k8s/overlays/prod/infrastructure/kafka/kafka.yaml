@@ -19,6 +19,10 @@ spec:
         port: 9093
         type: internal
         tls: true
+    template:
+      pod:
+        imagePullSecrets:
+          - name: ghcr-pull-secret
     config:
       default.replication.factor: 3
       log.retention.hours: 168
@@ -30,3 +34,7 @@ spec:
   entityOperator:
     topicOperator: {}
     userOperator: {}
+    template:
+      pod:
+        imagePullSecrets:
+          - name: ghcr-pull-secret
