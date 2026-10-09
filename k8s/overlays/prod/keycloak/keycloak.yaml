@@ -1,12 +1,23 @@
+
 apiVersion: k8s.keycloak.org/v2beta1
 kind: Keycloak
+
 metadata:
   name: keycloak
   namespace: keycloak
+
 spec:
   instances: 1
-  image: quay.io/keycloak/keycloak:26.7.2
+
+  # Imagem privada do GHCR
+  image: ghcr.io/samuelmelo98/mirror/quay.io/keycloak/keycloak:26.7.2
+
+  # Credencial para baixar a imagem privada
+  imagePullSecrets:
+    - name: ghcr-pull-secret
+
   startOptimized: false
+
   db:
     vendor: postgres
     host: keycloak-postgres
@@ -19,15 +30,20 @@ spec:
     passwordSecret:
       name: keycloak-db-credentials
       key: password
+
   http:
     httpEnabled: true
+
   hostname:
     hostname: https://auth.stringtecnologiadf.org
     strict: true
+
   proxy:
     headers: xforwarded
+
   ingress:
     enabled: false
+
   resources:
     requests:
       cpu: 250m
@@ -35,3 +51,4 @@ spec:
     limits:
       cpu: "1"
       memory: 1Gi
+
