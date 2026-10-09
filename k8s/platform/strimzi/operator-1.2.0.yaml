@@ -10695,6 +10695,8 @@ spec:
         name: strimzi-cluster-operator
         strimzi.io/kind: cluster-operator
     spec:
+      imagePullSecrets:
+        - name: ghcr-pull-secret
       serviceAccountName: strimzi-cluster-operator
       automountServiceAccountToken: false
       volumes:
@@ -10724,7 +10726,7 @@ spec:
             name: strimzi-cluster-operator
       containers:
         - name: strimzi-cluster-operator
-          image: quay.io/strimzi/operator:1.2.0
+          image: ghcr.io/samuelmelo98/mirror/quay.io/strimzi/operator:1.2.0
           ports:
             - containerPort: 8080
               name: http
@@ -10753,28 +10755,28 @@ spec:
               value: quay.io/strimzi/kafka:1.2.0-kafka-4.3.1
             - name: STRIMZI_KAFKA_IMAGES
               value: |
-                4.2.0=quay.io/strimzi/kafka:1.2.0-kafka-4.2.0
+                4.2.0=ghcr.io/samuelmelo98/mirror/quay.io/strimzi/kafka:1.2.0-kafka-4.2.0
                 4.2.1=quay.io/strimzi/kafka:1.2.0-kafka-4.2.1
                 4.3.0=quay.io/strimzi/kafka:1.2.0-kafka-4.3.0
                 4.3.1=quay.io/strimzi/kafka:1.2.0-kafka-4.3.1
             - name: STRIMZI_KAFKA_CONNECT_IMAGES
               value: |
-                4.2.0=quay.io/strimzi/kafka:1.2.0-kafka-4.2.0
+                4.2.0=ghcr.io/samuelmelo98/mirror/quay.io/strimzi/kafka:1.2.0-kafka-4.2.0
                 4.2.1=quay.io/strimzi/kafka:1.2.0-kafka-4.2.1
                 4.3.0=quay.io/strimzi/kafka:1.2.0-kafka-4.3.0
                 4.3.1=quay.io/strimzi/kafka:1.2.0-kafka-4.3.1
             - name: STRIMZI_KAFKA_MIRROR_MAKER_2_IMAGES
               value: |
-                4.2.0=quay.io/strimzi/kafka:1.2.0-kafka-4.2.0
+                4.2.0=ghcr.io/samuelmelo98/mirror/quay.io/strimzi/kafka:1.2.0-kafka-4.2.0
                 4.2.1=quay.io/strimzi/kafka:1.2.0-kafka-4.2.1
                 4.3.0=quay.io/strimzi/kafka:1.2.0-kafka-4.3.0
                 4.3.1=quay.io/strimzi/kafka:1.2.0-kafka-4.3.1
             - name: STRIMZI_DEFAULT_TOPIC_OPERATOR_IMAGE
-              value: quay.io/strimzi/operator:1.2.0
+              value: ghcr.io/samuelmelo98/mirror/quay.io/strimzi/operator:1.2.0
             - name: STRIMZI_DEFAULT_USER_OPERATOR_IMAGE
-              value: quay.io/strimzi/operator:1.2.0
+              value: ghcr.io/samuelmelo98/mirror/quay.io/strimzi/operator:1.2.0
             - name: STRIMZI_DEFAULT_KAFKA_INIT_IMAGE
-              value: quay.io/strimzi/operator:1.2.0
+              value: ghcr.io/samuelmelo98/mirror/quay.io/strimzi/operator:1.2.0
             - name: STRIMZI_DEFAULT_KAFKA_BRIDGE_IMAGE
               value: quay.io/strimzi/kafka-bridge:1.1.0
             - name: STRIMZI_DEFAULT_KANIKO_EXECUTOR_IMAGE
