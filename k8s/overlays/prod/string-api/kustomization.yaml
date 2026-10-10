@@ -9,4 +9,4 @@ resources:
 images:
 - name: IMAGE_PLACEHOLDER
   newName: ghcr.io/samuelmelo98/string-api
-  newTag: 9.0.1
+  newTag: 9.0.2
