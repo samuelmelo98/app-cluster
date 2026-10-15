@@ -8,6 +8,7 @@ resources:
   - deployment.yaml
   - service.yaml
   - networkpolicy.yaml
+  - sealed-secret.yaml
 
 images:
   - name: OCR_ENGINE_IMAGE

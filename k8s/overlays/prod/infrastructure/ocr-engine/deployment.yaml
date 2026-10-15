@@ -30,6 +30,8 @@ spec:
           envFrom:
             - configMapRef:
                 name: ocr-engine-config
+            - secretRef:
+                name: ocr-engine-secret
 
           resources:
             requests:
@@ -104,6 +106,7 @@ spec:
               path: /health
               port: http
             periodSeconds: 5
+            timeoutSeconds: 10
             failureThreshold: 120
 
           readinessProbe:
@@ -111,12 +114,16 @@ spec:
               path: /health
               port: http
             periodSeconds: 10
+            timeoutSeconds: 10
+            failureThreshold: 6
 
           livenessProbe:
             httpGet:
               path: /health
               port: http
-            periodSeconds: 20
+            periodSeconds: 30
+            timeoutSeconds: 10
+            failureThreshold: 8
 
           volumeMounts:
             - name: paddle-cache
