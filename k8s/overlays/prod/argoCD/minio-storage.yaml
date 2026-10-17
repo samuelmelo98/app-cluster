@@ -1,0 +1,22 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+
+metadata:
+  name: minio-storage
+  namespace: argocd
+
+spec:
+  project: default
+
+  source:
+    repoURL: https://github.com/samuelmelo98/app-cluster.git
+    targetRevision: main
+    path: k8s/overlays/prod/infrastructure/minio-storage
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: prod
+
+  syncPolicy:
+    syncOptions:
+      - FailOnSharedResource=true

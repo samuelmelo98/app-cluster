@@ -12,6 +12,7 @@ resources:
   - redis.yaml
   - redis-insight.yaml
   - minio.yaml
+  - minio-storage.yaml
   - postgres.yaml
   - kafka.yaml
   - kafka-ui.yaml
