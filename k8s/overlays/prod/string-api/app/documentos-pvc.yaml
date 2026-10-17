@@ -4,6 +4,8 @@ kind: PersistentVolumeClaim
 metadata:
   name: documentos-pvc
   namespace: prod
+  annotations:
+    argocd.argoproj.io/sync-options: Prune=false,Delete=false
 
 spec:
   storageClassName: local-path
