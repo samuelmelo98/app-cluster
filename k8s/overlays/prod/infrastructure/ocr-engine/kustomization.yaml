@@ -1,0 +1,20 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: prod
+
+resources:
+  - configmap.yaml
+  - deployment.yaml
+  - service.yaml
+  - networkpolicy.yaml
+  - sealed-secret.yaml
+
+images:
+  - name: OCR_ENGINE_IMAGE
+    newName: ghcr.io/samuelmelo98/ocr-engine-quarkus
+    newTag: 1.0.0
+
+  - name: PADDLE_WORKER_IMAGE
+    newName: ghcr.io/samuelmelo98/ocr-engine-paddle-worker
+    newTag: 1.0.0

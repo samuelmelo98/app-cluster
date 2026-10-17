@@ -25,3 +25,4 @@ resources:
   - ia-postgres.yaml
   - rag-api.yaml
   - string-emails.yaml
+  - ocr-engine.yaml

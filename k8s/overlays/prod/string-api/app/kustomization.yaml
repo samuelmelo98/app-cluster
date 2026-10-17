@@ -122,6 +122,48 @@ patches:
 
           - name: APP_EMAIL_TEST_TO
             value: "samuelmelo98@hotmail.com"
+
+                   # =================================================
+          # OCR - QUARKUS
+          # =================================================
+          - name: OCR_ENABLED
+            value: "true"
+
+          - name: OCR_ENGINE
+            value: "quarkus"
+
+          - name: OCR_QUARKUS_URL
+            value: "http://ocr-engine.prod.svc.cluster.local:8080/api/v1/ocr/extrair"
+
+          - name: OCR_QUARKUS_API_KEY
+            valueFrom:
+              secretKeyRef:
+                name: ocr-engine-secret
+                key: OCR_API_KEY
+
+          # =================================================
+          # OCR - MINIO
+          # =================================================
+          - name: MINIO_ENDPOINT
+            value: "http://minio.prod.svc.cluster.local:9000"
+
+          - name: MINIO_BUCKET
+            value: "ocr"
+
+          - name: MINIO_ACCESS_KEY
+            valueFrom:
+              secretKeyRef:
+                name: string-api-secret
+                key: minio-access-key
+
+          - name: MINIO_SECRET_KEY
+            valueFrom:
+              secretKeyRef:
+                name: string-api-secret
+                key: minio-secret-key
+
+          - name: OCR_STORAGE_PREFIX
+            value: "ocr/imagens/prod"
     target:
       kind: Deployment
       name: app

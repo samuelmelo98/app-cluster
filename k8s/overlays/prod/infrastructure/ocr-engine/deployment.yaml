@@ -1,0 +1,135 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ocr-engine
+  namespace: prod
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: ocr-engine
+  template:
+    metadata:
+      labels:
+        app: ocr-engine
+    spec:
+      imagePullSecrets:
+        - name: ghcr-pull-secret
+
+      containers:
+        - name: ocr-engine
+          image: OCR_ENGINE_IMAGE
+          imagePullPolicy: IfNotPresent
+
+          ports:
+            - name: http
+              containerPort: 8080
+
+          envFrom:
+            - configMapRef:
+                name: ocr-engine-config
+            - secretRef:
+                name: ocr-engine-secret
+
+          resources:
+            requests:
+              cpu: 100m
+              memory: 192Mi
+            limits:
+              cpu: 500m
+              memory: 384Mi
+
+          startupProbe:
+            httpGet:
+              path: /q/health
+              port: http
+            periodSeconds: 5
+            failureThreshold: 36
+
+          readinessProbe:
+            httpGet:
+              path: /q/health
+              port: http
+            periodSeconds: 10
+
+          livenessProbe:
+            httpGet:
+              path: /q/health
+              port: http
+            periodSeconds: 20
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: paddle-worker
+  namespace: prod
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: paddle-worker
+  template:
+    metadata:
+      labels:
+        app: paddle-worker
+    spec:
+      imagePullSecrets:
+        - name: ghcr-pull-secret
+
+      containers:
+        - name: paddle-worker
+          image: PADDLE_WORKER_IMAGE
+          imagePullPolicy: IfNotPresent
+
+          ports:
+            - name: http
+              containerPort: 8000
+
+          envFrom:
+            - configMapRef:
+                name: ocr-engine-config
+
+          resources:
+            requests:
+              cpu: 500m
+              memory: 1Gi
+            limits:
+              cpu: "2"
+              memory: 2Gi
+
+          startupProbe:
+            httpGet:
+              path: /health
+              port: http
+            periodSeconds: 5
+            timeoutSeconds: 10
+            failureThreshold: 120
+
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: http
+            periodSeconds: 10
+            timeoutSeconds: 10
+            failureThreshold: 6
+
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: http
+            periodSeconds: 30
+            timeoutSeconds: 10
+            failureThreshold: 8
+
+          volumeMounts:
+            - name: paddle-cache
+              mountPath: /root/.paddlex
+
+      volumes:
+        - name: paddle-cache
+          emptyDir:
+            sizeLimit: 4Gi
