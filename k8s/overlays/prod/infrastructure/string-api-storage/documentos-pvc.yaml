@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  # O nome ja existe no cluster; NAO modificar.
+  name: string-api-documentos-pvc
+  namespace: prod
+  annotations:
+    # Preservar mesmo se a app for sincronizada com prune ou excluida.
+    argocd.argoproj.io/sync-options: Prune=false,Delete=false
+spec:
+  # Manter igual ao PVC atual: storageClass e accessModes sao imutaveis.
+  storageClassName: local-path
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi

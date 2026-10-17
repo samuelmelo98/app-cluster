@@ -1,0 +1,21 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: string-api-storage
+  namespace: argocd
+spec:
+  # Confirme o projeto e repoURL usados pela app string-api existente.
+  project: default
+  source:
+    repoURL: https://github.com/samuelmelo98/app-cluster.git
+    targetRevision: main
+    path: k8s/overlays/prod/infrastructure/string-api-storage
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: prod
+  # Sem auto-sync: apropriacao manual do PVC existente e intencional.
+  syncPolicy:
+    syncOptions:
+      - Prune=false
+      - Delete=false
+      - FailOnSharedResource=true
