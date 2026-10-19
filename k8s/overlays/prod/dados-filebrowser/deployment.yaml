@@ -1,0 +1,147 @@
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dados-filebrowser
+  namespace: prod
+spec:
+  replicas: 1
+
+  strategy:
+    type: Recreate
+
+  selector:
+    matchLabels:
+      app: dados-filebrowser
+
+  template:
+    metadata:
+      labels:
+        app: dados-filebrowser
+
+    spec:
+      nodeSelector:
+        kubernetes.io/hostname: servidor-b
+
+      automountServiceAccountToken: false
+
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 1000
+        runAsNonRoot: true
+        fsGroup: 1000
+        seccompProfile:
+          type: RuntimeDefault
+
+      containers:
+        - name: filebrowser
+          image: ghcr.io/gtsteffaniak/filebrowser:2.0.1-stable
+          imagePullPolicy: IfNotPresent
+
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+
+          # =====================================
+          # CONFIGURACAO E KEYCLOAK OIDC
+          # =====================================
+          env:
+            - name: FILEBROWSER_CONFIG
+              value: /home/filebrowser/data/config.yaml
+
+            - name: FILEBROWSER_OIDC_CLIENT_ID
+              value: "dados-filebrowser"
+
+            - name: FILEBROWSER_OIDC_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: dados-filebrowser-oidc
+                  key: FILEBROWSER_OIDC_CLIENT_SECRET
+
+          # =====================================
+          # SEGURANCA
+          # =====================================
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop:
+                - ALL
+
+          # =====================================
+          # RECURSOS
+          # =====================================
+          resources:
+            requests:
+              cpu: 50m
+              memory: 128Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
+
+          # =====================================
+          # VERIFICACAO DE SAUDE
+          # =====================================
+          startupProbe:
+            httpGet:
+              path: /health
+              port: http
+            periodSeconds: 5
+            failureThreshold: 24
+
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: http
+            periodSeconds: 10
+            timeoutSeconds: 3
+
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: http
+            periodSeconds: 30
+            timeoutSeconds: 3
+            failureThreshold: 3
+
+          # =====================================
+          # VOLUMES
+          # =====================================
+          volumeMounts:
+            - name: hdd
+              mountPath: /arquivos
+              readOnly: true
+
+            - name: data
+              mountPath: /home/filebrowser/data
+
+            - name: config
+              mountPath: /home/filebrowser/data/config.yaml
+              subPath: config.yaml
+              readOnly: true
+
+            - name: tmp
+              mountPath: /tmp
+
+      # =========================================
+      # ARMAZENAMENTO DO HOST
+      # =========================================
+      volumes:
+        - name: hdd
+          hostPath:
+            path: /mnt/dados-hdd
+            type: Directory
+
+        - name: data
+          hostPath:
+            path: /var/lib/dados-filebrowser
+            type: Directory
+
+        - name: config
+          configMap:
+            name: dados-filebrowser-config
+
+        - name: tmp
+          emptyDir:
+            sizeLimit: 256Mi

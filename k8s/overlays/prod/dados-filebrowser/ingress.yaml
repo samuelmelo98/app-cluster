@@ -1,0 +1,19 @@
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: dados-filebrowser
+  namespace: prod
+spec:
+  ingressClassName: traefik
+  rules:
+    - host: dados.cluster.stringtecnologiadf.org
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: dados-filebrowser
+                port:
+                  number: 80
