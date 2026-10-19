@@ -1,0 +1,85 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: dados-filebrowser-config
+  namespace: prod
+
+data:
+  config.yaml: |
+    # ==========================================
+    # SERVIDOR HTTP
+    # ==========================================
+    http:
+      port: 8080
+      listen: "0.0.0.0"
+      trustProxyHeaders: true
+
+    # ==========================================
+    # ARMAZENAMENTO
+    # ==========================================
+    server:
+      database:
+        path: /home/filebrowser/data/database.sqlite
+
+      cacheDir: /home/filebrowser/data/cache
+
+      sources:
+        - name: "HDD Servidor B"
+          path: /arquivos
+
+          config:
+            defaultEnabled: true
+
+            defaultPermissions:
+              view: true
+              download: true
+              modify: false
+              create: false
+              delete: false
+
+    # ==========================================
+    # AUTENTICACAO KEYCLOAK OIDC
+    # ==========================================
+    auth:
+      adminUsername: admin
+
+      methods:
+        password:
+          enabled: false
+          signup: false
+
+        oidc:
+          enabled: true
+
+          issuerUrl: "https://auth.stringtecnologiadf.org/realms/stringtecnologia"
+
+          scopes: "openid email profile"
+
+          userIdentifier: "preferred_username"
+
+          groupsClaim: "groups"
+
+          adminGroup: "/dados-filebrowser-admins"
+
+          userGroups:
+            - "/dados-filebrowser-admins"
+            - "/dados-filebrowser-users"
+
+          disableVerifyTLS: false
+
+    # ==========================================
+    # PERMISSOES PADRAO
+    # ==========================================
+    userDefaults:
+      account:
+        permissions:
+          admin: false
+          api: false
+          share: false
+          realtime: false
+
+    # ==========================================
+    # INTERFACE WEB
+    # ==========================================
+    frontend:
+      name: "Arquivos - Servidor B"
