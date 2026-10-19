@@ -17,6 +17,7 @@ data:
     # ==========================================
     # ARMAZENAMENTO
     # ==========================================
+    
     server:
       database:
         path: /home/filebrowser/data/database.sqlite
@@ -24,11 +25,17 @@ data:
       cacheDir: /home/filebrowser/data/cache
 
       sources:
+
+        # ==========================================
+        # HDD GERAL - SOMENTE LEITURA
+        # ==========================================
         - name: "HDD Servidor B"
           path: /arquivos
 
           config:
             defaultEnabled: true
+            readOnly: true
+            private: true
 
             defaultPermissions:
               view: true
@@ -36,6 +43,24 @@ data:
               modify: false
               create: false
               delete: false
+
+        # ==========================================
+        # DOCUMENTOS - ACESSO COMPLETO
+        # ==========================================
+        - name: "Documentos"
+          path: /documentos
+
+          config:
+            defaultEnabled: true
+            readOnly: false
+
+            defaultPermissions:
+              view: true
+              download: true
+              modify: true
+              create: true
+              delete: true
+
 
     # ==========================================
     # AUTENTICACAO KEYCLOAK OIDC

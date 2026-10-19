@@ -124,6 +124,10 @@ spec:
             - name: tmp
               mountPath: /tmp
 
+            - name: documentos
+              mountPath: /documentos
+              readOnly: false
+
       # =========================================
       # ARMAZENAMENTO DO HOST
       # =========================================
@@ -131,6 +135,10 @@ spec:
         - name: hdd
           hostPath:
             path: /mnt/dados-hdd
+            type: Directory
+        - name: documentos
+          hostPath:
+            path: /mnt/dados-hdd/documentos
             type: Directory
 
         - name: data
