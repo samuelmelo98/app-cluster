@@ -13,8 +13,8 @@ spec:
   strategy:
     type: RollingUpdate
     rollingUpdate:
-      maxUnavailable: 0
-      maxSurge: 1
+      maxUnavailable: 1
+      maxSurge: 0
 
   selector:
     matchLabels:
@@ -73,7 +73,7 @@ spec:
                 secretKeyRef:
                   name: string-messaging-secret
                   key: whatsapp-webhook-verify-token
-          
+
             - name: REDIS_PASSWORD
               valueFrom:
                 secretKeyRef:
@@ -107,7 +107,7 @@ spec:
 
           resources:
             requests:
-              cpu: 250m
+              cpu: 50m
               memory: 256Mi
             limits:
               cpu: "1"
