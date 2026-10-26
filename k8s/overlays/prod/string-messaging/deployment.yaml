@@ -31,7 +31,7 @@ spec:
 
       containers:
         - name: string-messaging
-          image: ghcr.io/samuelmelo98/string-messaging-platform:0.1.0
+          image: ghcr.io/samuelmelo98/string-messaging-platform:0.1.1
           imagePullPolicy: IfNotPresent
 
           ports:
@@ -73,6 +73,12 @@ spec:
                 secretKeyRef:
                   name: string-messaging-secret
                   key: whatsapp-webhook-verify-token
+          
+            - name: REDIS_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: redis-secret
+                  key: REDIS_PASSWORD
 
           startupProbe:
             httpGet:
