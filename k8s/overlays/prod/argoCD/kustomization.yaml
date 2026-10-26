@@ -29,3 +29,4 @@ resources:
   - string-emails.yaml
   - ocr-engine.yaml
   - dados-filebrowser.yaml
+  - string-messaging.yaml
