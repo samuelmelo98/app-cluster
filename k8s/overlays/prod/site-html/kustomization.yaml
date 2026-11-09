@@ -9,7 +9,7 @@ images:
   newTag: 6.15.9
 
 replicas:
-- count: 1
+- count: 8
   name: app
 
 labels:
